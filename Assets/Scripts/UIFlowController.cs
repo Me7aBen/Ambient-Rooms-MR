@@ -7,7 +7,6 @@ public class UIFlowController : MonoBehaviour
     public GameObject instructionsPanel;
     public GameObject formPanel;
     public GameObject readyPanel;
-    public GameObject optionsPanel;
     public GameObject confirmResetPanel;
 
     [Header("Main Buttons")]
@@ -28,26 +27,12 @@ public class UIFlowController : MonoBehaviour
     public SkyboxManager skyboxManager;
     public GameObject uiRoot;
 
-    [Header("Floating Prompt UI")]
-    public GameObject pressXShow;
-    public GameObject pressXHide;
-    public GameObject optionsPanelAnchor;
-
-    [Header("OVR Input Settings")]
-    [SerializeField] private OVRInput.RawButton toggleButton = OVRInput.RawButton.X;
-
     private string selectedEnvironment = "";
-    private bool hasSpawnedFirstWindow = false;
-    private bool isOptionsVisible = false;
-
     private readonly string[] environments = { "Ocean", "Jungle", "Mountain", "Space", "Rainy Day" };
 
     private void Start()
     {
         ShowInstructions();
-        
-        pressXShow.SetActive(false);
-        pressXHide.SetActive(false);
 
         startButton.onClick.AddListener(ShowForm);
         spawnButton.onClick.AddListener(OnSpawnWindow);
@@ -64,23 +49,9 @@ public class UIFlowController : MonoBehaviour
         skyboxManager.OnFirstWindowSpawned += HandleFirstSpawn;
     }
 
-    private void Update()
-    {
-        if (!hasSpawnedFirstWindow) return;
-
-        if (OVRInput.GetDown(toggleButton))
-        {
-            isOptionsVisible = !isOptionsVisible;
-            optionsPanelAnchor.SetActive(isOptionsVisible);
-            pressXShow.SetActive(!isOptionsVisible);
-            pressXHide.SetActive(isOptionsVisible);
-        }
-    }
-
     private void ShowInstructions() => ShowOnly(instructionsPanel);
     private void ShowForm() => ShowOnly(formPanel);
     private void ShowReady() => ShowOnly(readyPanel);
-    private void ShowOptions() => ShowOnly(optionsPanel);
     private void ShowConfirmReset() => ShowOnly(confirmResetPanel);
 
     private void ShowOnly(GameObject panel)
@@ -88,7 +59,6 @@ public class UIFlowController : MonoBehaviour
         instructionsPanel.SetActive(false);
         formPanel.SetActive(false);
         readyPanel.SetActive(false);
-        optionsPanel.SetActive(false);
         confirmResetPanel.SetActive(false);
 
         panel?.SetActive(true);
@@ -116,23 +86,16 @@ public class UIFlowController : MonoBehaviour
     {
         skyboxManager.ResetEnvironment();
         uiRoot.SetActive(true);
-        pressXShow.SetActive(false);
-        pressXHide.SetActive(false);
-        optionsPanelAnchor.SetActive(false);
         ShowForm();
     }
 
     public void HideConfirmReset()
     {
-        ShowOptions();
+        ShowReady();
     }
 
     private void HandleFirstSpawn()
     {
-        hasSpawnedFirstWindow = true;
-        uiRoot.SetActive(false);
-        pressXShow.SetActive(true);
-        pressXHide.SetActive(false);
-        optionsPanelAnchor.SetActive(false);
+        // No se oculta la UI, se mantiene visible
     }
 }

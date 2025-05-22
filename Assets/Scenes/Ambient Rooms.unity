@@ -17476,24 +17476,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d35138dde41f4e96b46515294e13d47d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  oceanSkybox: {fileID: 2100000, guid: 1439d9fbc1efe46bcb005740596af81f, type: 2}
-  jungleSkybox: {fileID: 2100000, guid: 8b9562c92450641238d631f63f454a81, type: 2}
-  mountainSkybox: {fileID: 2100000, guid: db2f4020743622745aa67212311137bb, type: 2}
-  spaceSkybox: {fileID: 2100000, guid: 1439d9fbc1efe46bcb005740596af81f, type: 2}
-  rainyDaySkybox: {fileID: 2100000, guid: 8b9562c92450641238d631f63f454a81, type: 2}
-  defaultSkybox: {fileID: 2100000, guid: db2f4020743622745aa67212311137bb, type: 2}
+  environmentRenderer: {fileID: 1919817600}
+  oceanMaterial: {fileID: 2100000, guid: db2f4020743622745aa67212311137bb, type: 2}
+  jungleMaterial: {fileID: 2100000, guid: 1439d9fbc1efe46bcb005740596af81f, type: 2}
+  mountainMaterial: {fileID: 2100000, guid: 8b9562c92450641238d631f63f454a81, type: 2}
+  spaceMaterial: {fileID: 2100000, guid: 1439d9fbc1efe46bcb005740596af81f, type: 2}
+  rainyDayMaterial: {fileID: 2100000, guid: db2f4020743622745aa67212311137bb, type: 2}
+  ambientAudioSource: {fileID: 1372348179}
   oceanClip: {fileID: 0}
   jungleClip: {fileID: 0}
   mountainClip: {fileID: 0}
   spaceClip: {fileID: 0}
   rainyDayClip: {fileID: 0}
-  ambientAudioSource: {fileID: 1372348179}
   windowPrefab: {fileID: 6556340145925282436, guid: 8afecbddecd3a2f40b64915169b416b2,
     type: 3}
-  spawnTransform: {fileID: 2119124661}
-  raycastManagerRef: {fileID: 808743882}
-  centerEyeAnchorRef: {fileID: 1498751534}
-  raycastAnchorRef: {fileID: 369052365}
 --- !u!4 &1358165839
 Transform:
   m_ObjectHideFlags: 0
@@ -32607,7 +32603,6 @@ MonoBehaviour:
   instructionsPanel: {fileID: 2094577090}
   formPanel: {fileID: 1367560047}
   readyPanel: {fileID: 282180508}
-  optionsPanel: {fileID: 36468605}
   confirmResetPanel: {fileID: 1435827952}
   startButton: {fileID: 1275731273}
   spawnButton: {fileID: 276132652}
@@ -32621,10 +32616,6 @@ MonoBehaviour:
   rainyDayButton: {fileID: 372926015}
   skyboxManager: {fileID: 1358165838}
   uiRoot: {fileID: 6384603698142451766}
-  pressXShow: {fileID: 258400505}
-  pressXHide: {fileID: 1020912939}
-  optionsPanelAnchor: {fileID: 36468605}
-  toggleButton: 256
 --- !u!222 &7855015028096792549
 CanvasRenderer:
   m_ObjectHideFlags: 0
