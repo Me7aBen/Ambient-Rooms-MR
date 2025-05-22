@@ -9537,7 +9537,6 @@ Transform:
   m_Children:
   - {fileID: 1411041019}
   - {fileID: 1919817599}
-  - {fileID: 1372348180}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &734556690
@@ -17483,11 +17482,11 @@ MonoBehaviour:
   spaceMaterial: {fileID: 2100000, guid: 1439d9fbc1efe46bcb005740596af81f, type: 2}
   rainyDayMaterial: {fileID: 2100000, guid: db2f4020743622745aa67212311137bb, type: 2}
   ambientAudioSource: {fileID: 1372348179}
-  oceanClip: {fileID: 0}
-  jungleClip: {fileID: 0}
-  mountainClip: {fileID: 0}
-  spaceClip: {fileID: 0}
-  rainyDayClip: {fileID: 0}
+  oceanClip: {fileID: 8300000, guid: f7f430c397094984098e57f38d3ddafc, type: 3}
+  jungleClip: {fileID: 8300000, guid: 012b2d7633a4b6b4d9aeebe888df0c98, type: 3}
+  mountainClip: {fileID: 8300000, guid: 11720ec128123a44095e1ee0eebae202, type: 3}
+  spaceClip: {fileID: 8300000, guid: cfc2bc4b85647234da5a67428dfe299b, type: 3}
+  rainyDayClip: {fileID: 8300000, guid: 1e44dacacfc64ab42b7fc87f87448a8f, type: 3}
   windowPrefab: {fileID: 6556340145925282436, guid: 8afecbddecd3a2f40b64915169b416b2,
     type: 3}
   raycastManagerRef: {fileID: 808743882}
@@ -17746,10 +17745,10 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
-  m_PlayOnAwake: 1
-  m_Volume: 1
+  m_PlayOnAwake: 0
+  m_Volume: 0.7
   m_Pitch: 1
-  Loop: 0
+  Loop: 1
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
@@ -17839,12 +17838,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1372348178}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.41409957, y: 0.018327346, z: -0.576582}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 732225118}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1375581028
 GameObject:
@@ -33247,4 +33246,5 @@ SceneRoots:
   - {fileID: 5838386446840036816}
   - {fileID: 211013754}
   - {fileID: 1358165839}
+  - {fileID: 1372348180}
   - {fileID: 2119124661}
