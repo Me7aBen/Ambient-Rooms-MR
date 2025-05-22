@@ -15,6 +15,11 @@ public class UIFlowController : MonoBehaviour
     public Button resetWindowsButton;
     public Button backToFormButton;
     public Button surpriseMeButton;
+    
+    public Button yesButton;
+    public Button noButton;
+
+    
 
     [Header("Environment Buttons")]
     public Button oceanButton;
@@ -39,12 +44,17 @@ public class UIFlowController : MonoBehaviour
         resetWindowsButton.onClick.AddListener(ShowConfirmReset);
         backToFormButton.onClick.AddListener(ShowForm);
         surpriseMeButton.onClick.AddListener(SelectRandomEnvironment);
+        
+        yesButton.onClick.AddListener(OnConfirmReset);
+        noButton.onClick.AddListener(HideConfirmReset);
 
         oceanButton.onClick.AddListener(() => SelectEnvironment("Ocean"));
         jungleButton.onClick.AddListener(() => SelectEnvironment("Jungle"));
         mountainButton.onClick.AddListener(() => SelectEnvironment("Mountain"));
         spaceButton.onClick.AddListener(() => SelectEnvironment("Space"));
         rainyDayButton.onClick.AddListener(() => SelectEnvironment("Rainy Day"));
+        
+
 
         skyboxManager.OnFirstWindowSpawned += HandleFirstSpawn;
     }

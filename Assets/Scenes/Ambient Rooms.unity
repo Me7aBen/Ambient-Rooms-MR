@@ -17490,9 +17490,9 @@ MonoBehaviour:
   rainyDayClip: {fileID: 0}
   windowPrefab: {fileID: 6556340145925282436, guid: 8afecbddecd3a2f40b64915169b416b2,
     type: 3}
-  raycastManagerRef: {fileID: 808743882}
-  centerEyeAnchorRef: {fileID: 1498751534}
-  raycastAnchorRef: {fileID: 369052365}
+  raycastManagerRef: {fileID: 0}
+  centerEyeAnchorRef: {fileID: 0}
+  raycastAnchorRef: {fileID: 0}
 --- !u!4 &1358165839
 Transform:
   m_ObjectHideFlags: 0
@@ -32612,6 +32612,8 @@ MonoBehaviour:
   resetWindowsButton: {fileID: 315772616}
   backToFormButton: {fileID: 1900893827}
   surpriseMeButton: {fileID: 1783926062}
+  yesButton: {fileID: 801629478}
+  noButton: {fileID: 663967979}
   oceanButton: {fileID: 259120897}
   jungleButton: {fileID: 1207913583}
   mountainButton: {fileID: 1639490738}

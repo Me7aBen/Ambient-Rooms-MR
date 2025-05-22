@@ -118,4 +118,6 @@ public class SkyboxManager : MonoBehaviour
         if (ambientAudioSource) ambientAudioSource.Stop();
         if (environmentRenderer) environmentRenderer.material = null;
     }
+    
+    
 }
