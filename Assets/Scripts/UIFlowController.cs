@@ -3,24 +3,16 @@ using UnityEngine.UI;
 
 public class UIFlowController : MonoBehaviour
 {
-    // =======================
-    //   Panel References
-    // =======================
     [Header("UI Panels")]
     public GameObject instructionsPanel;
     public GameObject formPanel;
-    public GameObject loadingPanel;
     public GameObject readyPanel;
     public GameObject optionsPanel;
+    public GameObject confirmResetPanel;
 
-    // =======================
-    //   Buttons & Input
-    // =======================
     [Header("Main Buttons")]
     public Button startButton;
-    public Button generateButton;
     public Button spawnButton;
-    public Button openOptionsButton;
     public Button resetWindowsButton;
     public Button backToFormButton;
     public Button surpriseMeButton;
@@ -28,13 +20,23 @@ public class UIFlowController : MonoBehaviour
     [Header("Tag Buttons")]
     public Button[] tagButtons;
 
-    [Header("Environment Input")]
-    public InputField environmentInput;
+    [Header("Manager References")]
+    public SkyboxManager skyboxManager;
+    public GameObject uiRoot;
 
-    // =======================
-    //   Internal State
-    // =======================
+    [Header("Floating Prompt UI")]
+    public GameObject pressXShow;  // Imagen: "Press X to show options"
+    public GameObject pressXHide;  // Imagen: "Press X to hide options"
+    public GameObject optionsPanelAnchor; // Panel que se activa/desactiva con el botón X
+
+    [Header("OVR Input Settings")]
+    [SerializeField] private OVRInput.RawButton toggleButton = OVRInput.RawButton.X; // Botón X del mando izquierdo
+
     private string selectedEnvironment = "";
+    private readonly string[] environments = { "Ocean", "Jungle", "Mountain", "Space", "Rainy Day" };
+
+    private bool hasSpawnedFirstWindow = false;
+    private bool isOptionsVisible = false;
 
     // =======================
     //   Initialization
@@ -43,114 +45,106 @@ public class UIFlowController : MonoBehaviour
     {
         ShowInstructions();
 
-        // Bind main buttons
         startButton.onClick.AddListener(ShowForm);
-        generateButton.onClick.AddListener(OnGenerate);
         spawnButton.onClick.AddListener(OnSpawnWindow);
-        openOptionsButton.onClick.AddListener(ShowOptions);
-        resetWindowsButton.onClick.AddListener(OnReset);
+        resetWindowsButton.onClick.AddListener(ShowConfirmReset);
         backToFormButton.onClick.AddListener(ShowForm);
         surpriseMeButton.onClick.AddListener(SelectRandomEnvironment);
 
-        // Bind tag buttons
         foreach (Button btn in tagButtons)
         {
             string tag = btn.GetComponentInChildren<Text>().text;
-            btn.onClick.AddListener(() => SelectTag(tag));
+            btn.onClick.AddListener(() => SelectEnvironment(tag));
+        }
+
+        skyboxManager.OnFirstWindowSpawned += HandleFirstSpawn;
+    }
+
+    // =======================
+    //   Update (X button logic)
+    // =======================
+    private void Update()
+    {
+        if (!hasSpawnedFirstWindow) return;
+
+        if (OVRInput.GetDown(toggleButton))
+        {
+            isOptionsVisible = !isOptionsVisible;
+
+            optionsPanelAnchor.SetActive(isOptionsVisible);
+            pressXShow.SetActive(!isOptionsVisible);
+            pressXHide.SetActive(isOptionsVisible);
         }
     }
 
     // =======================
-    //   Panel Navigation
+    //   UI Navigation
     // =======================
-    private void ShowInstructions()
-    {
-        HideAllPanels();
-        instructionsPanel.SetActive(true);
-    }
+    private void ShowInstructions() => ShowOnly(instructionsPanel);
+    private void ShowForm() => ShowOnly(formPanel);
+    private void ShowReady() => ShowOnly(readyPanel);
+    private void ShowOptions() => ShowOnly(optionsPanel);
+    private void ShowConfirmReset() => ShowOnly(confirmResetPanel);
 
-    private void ShowForm()
-    {
-        HideAllPanels();
-        formPanel.SetActive(true);
-    }
-
-    private void ShowLoading()
-    {
-        HideAllPanels();
-        loadingPanel.SetActive(true);
-    }
-
-    private void ShowReady()
-    {
-        HideAllPanels();
-        readyPanel.SetActive(true);
-    }
-
-    private void ShowOptions()
-    {
-        HideAllPanels();
-        optionsPanel.SetActive(true);
-    }
-
-    private void HideAllPanels()
+    private void ShowOnly(GameObject panel)
     {
         instructionsPanel.SetActive(false);
         formPanel.SetActive(false);
-        loadingPanel.SetActive(false);
         readyPanel.SetActive(false);
         optionsPanel.SetActive(false);
+        confirmResetPanel.SetActive(false);
+
+        panel?.SetActive(true);
     }
 
     // =======================
-    //   Actions
+    //   Environment Selection
     // =======================
-    private void OnGenerate()
+    private void SelectEnvironment(string env)
     {
-        selectedEnvironment = environmentInput.text.Trim();
-
-        if (string.IsNullOrEmpty(selectedEnvironment))
-        {
-            Debug.LogWarning("Environment not specified.");
-            return;
-        }
-
-        ShowLoading();
-
-        // Simulate generation delay (replace with actual logic)
-        Invoke(nameof(FinishEnvironmentGeneration), 2.5f);
-    }
-
-    private void FinishEnvironmentGeneration()
-    {
-        // After environment is generated, go to "Ready" state
+        selectedEnvironment = env;
+        skyboxManager.ApplyEnvironment(env);
         ShowReady();
-    }
-
-    private void OnSpawnWindow()
-    {
-        Debug.Log($"[AmbientRooms] Spawning window for environment: {selectedEnvironment}");
-
-        // TODO: Connect this with your skybox/window instantiation logic
-    }
-
-    private void OnReset()
-    {
-        Debug.Log("[AmbientRooms] Resetting all windows...");
-
-        // TODO: Implement actual logic to remove windows / reset scene
-    }
-
-    private void SelectTag(string tag)
-    {
-        environmentInput.text = tag;
-        selectedEnvironment = tag;
     }
 
     private void SelectRandomEnvironment()
     {
-        string[] predefined = { "Ocean", "Jungle", "Mountains", "Space", "Rainy Day" };
-        string randomTag = predefined[Random.Range(0, predefined.Length)];
-        SelectTag(randomTag);
+        int index = Random.Range(0, environments.Length);
+        SelectEnvironment(environments[index]);
+    }
+
+    // =======================
+    //   Spawn & Reset
+    // =======================
+    private void OnSpawnWindow()
+    {
+        skyboxManager.SpawnWindow();
+    }
+
+    public void OnConfirmReset()
+    {
+        skyboxManager.ResetEnvironment();
+        uiRoot.SetActive(true);
+        pressXShow.SetActive(false);
+        pressXHide.SetActive(false);
+        optionsPanelAnchor.SetActive(false);
+        ShowForm();
+    }
+
+    public void HideConfirmReset()
+    {
+        ShowOptions();
+    }
+
+    // =======================
+    //   After first spawn
+    // =======================
+    private void HandleFirstSpawn()
+    {
+        hasSpawnedFirstWindow = true;
+        uiRoot.SetActive(false);
+        pressXShow.SetActive(true);
+        pressXHide.SetActive(false);
+        optionsPanelAnchor.SetActive(false);
     }
 }
