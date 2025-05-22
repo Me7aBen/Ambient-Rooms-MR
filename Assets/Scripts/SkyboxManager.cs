@@ -1,5 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
+using Meta.XR;
+using Meta.XR.MRUtilityKitSamples.EnvironmentPanelPlacement;
 using Unity.Mathematics;
 
 public class SkyboxManager : MonoBehaviour
@@ -32,6 +34,10 @@ public class SkyboxManager : MonoBehaviour
     private bool hasSpawnedFirstWindow = false;
 
     public System.Action OnFirstWindowSpawned;
+    
+    public EnvironmentRaycastManager raycastManagerRef;
+    public Transform centerEyeAnchorRef;
+    public Transform raycastAnchorRef;
 
     private void Awake()
     {
@@ -74,9 +80,26 @@ public class SkyboxManager : MonoBehaviour
     {
         Camera cam = Camera.main;
         if (cam == null || windowPrefab == null) return;
-        Vector3 spawnPosition = cam.transform.position + cam.transform.forward * 0.5f;
-        Quaternion spawnRotation = quaternion.LookRotation(-cam.transform.forward, cam.transform.up);
+
+        Vector3 spawnPosition = cam.transform.position + cam.transform.forward * 1.5f;
+        Quaternion spawnRotation = Quaternion.LookRotation(-cam.transform.forward);
+
         GameObject window = Instantiate(windowPrefab, spawnPosition, spawnRotation);
+
+        // Configurar referencias necesarias
+        var placement = window.GetComponent<EnvironmentPanelPlacement>();
+        if (placement != null)
+        {
+            placement.GetType().GetField("_raycastManager", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)
+                ?.SetValue(placement, raycastManagerRef);
+
+            placement.GetType().GetField("_centerEyeAnchor", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)
+                ?.SetValue(placement, centerEyeAnchorRef);
+
+            placement.GetType().GetField("_raycastAnchor", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)
+                ?.SetValue(placement, raycastAnchorRef);
+        }
+
         if (!hasSpawnedFirstWindow)
         {
             hasSpawnedFirstWindow = true;

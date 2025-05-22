@@ -17491,6 +17491,9 @@ MonoBehaviour:
   windowPrefab: {fileID: 6556340145925282436, guid: 8afecbddecd3a2f40b64915169b416b2,
     type: 3}
   spawnTransform: {fileID: 2119124661}
+  raycastManagerRef: {fileID: 808743882}
+  centerEyeAnchorRef: {fileID: 1498751534}
+  raycastAnchorRef: {fileID: 369052365}
 --- !u!4 &1358165839
 Transform:
   m_ObjectHideFlags: 0
