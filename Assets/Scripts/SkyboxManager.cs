@@ -1,5 +1,7 @@
 using UnityEngine;
 using System;
+using Meta.XR;
+using Meta.XR.MRUtilityKitSamples.EnvironmentPanelPlacement;
 
 public class SkyboxManager : MonoBehaviour
 {
@@ -23,6 +25,10 @@ public class SkyboxManager : MonoBehaviour
 
     [Header("Window Prefab")]
     public GameObject windowPrefab;
+    
+    public EnvironmentRaycastManager raycastManagerRef;
+    public Transform centerEyeAnchorRef;
+    public Transform raycastAnchorRef;
 
     public event Action OnFirstWindowSpawned;
 
@@ -75,9 +81,24 @@ public class SkyboxManager : MonoBehaviour
         Camera cam = Camera.main;
         if (cam == null || windowPrefab == null) return;
 
-        Vector3 spawnPos = cam.transform.position + cam.transform.forward * 1.5f;
-        Quaternion spawnRot = Quaternion.LookRotation(-cam.transform.forward);
-        Instantiate(windowPrefab, spawnPos, spawnRot);
+        Vector3 spawnPosition = cam.transform.position + cam.transform.forward * 1.5f;
+        Quaternion spawnRotation = Quaternion.LookRotation(-cam.transform.forward);
+
+        GameObject window = Instantiate(windowPrefab, spawnPosition, spawnRotation);
+
+        // Configurar referencias necesarias
+        var placement = window.GetComponent<EnvironmentPanelPlacement>();
+        if (placement != null)
+        {
+            placement.GetType().GetField("_raycastManager", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)
+                ?.SetValue(placement, raycastManagerRef);
+
+            placement.GetType().GetField("_centerEyeAnchor", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)
+                ?.SetValue(placement, centerEyeAnchorRef);
+
+            placement.GetType().GetField("_raycastAnchor", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)
+                ?.SetValue(placement, raycastAnchorRef);
+        }
 
         if (!hasSpawnedFirstWindow)
         {
@@ -85,6 +106,7 @@ public class SkyboxManager : MonoBehaviour
             OnFirstWindowSpawned?.Invoke();
         }
     }
+
 
     public void ResetEnvironment()
     {
