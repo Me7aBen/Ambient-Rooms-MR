@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using Unity.Mathematics;
 
 public class SkyboxManager : MonoBehaviour
 {
@@ -71,15 +72,15 @@ public class SkyboxManager : MonoBehaviour
 
     public void SpawnWindow()
     {
-        if (windowPrefab && spawnTransform)
+        Camera cam = Camera.main;
+        if (cam == null || windowPrefab == null) return;
+        Vector3 spawnPosition = cam.transform.position + cam.transform.forward * 0.5f;
+        Quaternion spawnRotation = quaternion.LookRotation(-cam.transform.forward, cam.transform.up);
+        GameObject window = Instantiate(windowPrefab, spawnPosition, spawnRotation);
+        if (!hasSpawnedFirstWindow)
         {
-            Instantiate(windowPrefab, spawnTransform.position, spawnTransform.rotation);
-
-            if (!hasSpawnedFirstWindow)
-            {
-                hasSpawnedFirstWindow = true;
-                OnFirstWindowSpawned?.Invoke();
-            }
+            hasSpawnedFirstWindow = true;
+            OnFirstWindowSpawned?.Invoke();
         }
     }
 

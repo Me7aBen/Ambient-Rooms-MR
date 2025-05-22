@@ -17488,7 +17488,8 @@ MonoBehaviour:
   spaceClip: {fileID: 0}
   rainyDayClip: {fileID: 0}
   ambientAudioSource: {fileID: 1372348179}
-  windowPrefab: {fileID: 5838386446840036817}
+  windowPrefab: {fileID: 6556340145925282436, guid: 8afecbddecd3a2f40b64915169b416b2,
+    type: 3}
   spawnTransform: {fileID: 2119124661}
 --- !u!4 &1358165839
 Transform:
@@ -31845,12 +31846,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8afecbddecd3a2f40b64915169b416b2, type: 3}
---- !u!1 &5838386446840036817 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6556340145925282436, guid: 8afecbddecd3a2f40b64915169b416b2,
-    type: 3}
-  m_PrefabInstance: {fileID: 5838386446840036816}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &5841140429444278710
 GameObject:
   m_ObjectHideFlags: 0
@@ -32616,14 +32611,13 @@ MonoBehaviour:
   resetWindowsButton: {fileID: 315772616}
   backToFormButton: {fileID: 1900893827}
   surpriseMeButton: {fileID: 1783926062}
-  tagButtons:
-  - {fileID: 259120897}
-  - {fileID: 1207913583}
-  - {fileID: 1639490738}
-  - {fileID: 1070304649}
-  - {fileID: 372926015}
-  skyboxManager: {fileID: 0}
-  uiRoot: {fileID: 0}
+  oceanButton: {fileID: 259120897}
+  jungleButton: {fileID: 1207913583}
+  mountainButton: {fileID: 1639490738}
+  spaceButton: {fileID: 1070304649}
+  rainyDayButton: {fileID: 372926015}
+  skyboxManager: {fileID: 1358165838}
+  uiRoot: {fileID: 6384603698142451766}
   pressXShow: {fileID: 258400505}
   pressXHide: {fileID: 1020912939}
   optionsPanelAnchor: {fileID: 36468605}

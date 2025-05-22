@@ -17,33 +17,37 @@ public class UIFlowController : MonoBehaviour
     public Button backToFormButton;
     public Button surpriseMeButton;
 
-    [Header("Tag Buttons")]
-    public Button[] tagButtons;
+    [Header("Environment Buttons")]
+    public Button oceanButton;
+    public Button jungleButton;
+    public Button mountainButton;
+    public Button spaceButton;
+    public Button rainyDayButton;
 
     [Header("Manager References")]
     public SkyboxManager skyboxManager;
     public GameObject uiRoot;
 
     [Header("Floating Prompt UI")]
-    public GameObject pressXShow;  // Imagen: "Press X to show options"
-    public GameObject pressXHide;  // Imagen: "Press X to hide options"
-    public GameObject optionsPanelAnchor; // Panel que se activa/desactiva con el botón X
+    public GameObject pressXShow;
+    public GameObject pressXHide;
+    public GameObject optionsPanelAnchor;
 
     [Header("OVR Input Settings")]
-    [SerializeField] private OVRInput.RawButton toggleButton = OVRInput.RawButton.X; // Botón X del mando izquierdo
+    [SerializeField] private OVRInput.RawButton toggleButton = OVRInput.RawButton.X;
 
     private string selectedEnvironment = "";
-    private readonly string[] environments = { "Ocean", "Jungle", "Mountain", "Space", "Rainy Day" };
-
     private bool hasSpawnedFirstWindow = false;
     private bool isOptionsVisible = false;
 
-    // =======================
-    //   Initialization
-    // =======================
+    private readonly string[] environments = { "Ocean", "Jungle", "Mountain", "Space", "Rainy Day" };
+
     private void Start()
     {
         ShowInstructions();
+        
+        pressXShow.SetActive(false);
+        pressXHide.SetActive(false);
 
         startButton.onClick.AddListener(ShowForm);
         spawnButton.onClick.AddListener(OnSpawnWindow);
@@ -51,18 +55,15 @@ public class UIFlowController : MonoBehaviour
         backToFormButton.onClick.AddListener(ShowForm);
         surpriseMeButton.onClick.AddListener(SelectRandomEnvironment);
 
-        foreach (Button btn in tagButtons)
-        {
-            string tag = btn.GetComponentInChildren<Text>().text;
-            btn.onClick.AddListener(() => SelectEnvironment(tag));
-        }
+        oceanButton.onClick.AddListener(() => SelectEnvironment("Ocean"));
+        jungleButton.onClick.AddListener(() => SelectEnvironment("Jungle"));
+        mountainButton.onClick.AddListener(() => SelectEnvironment("Mountain"));
+        spaceButton.onClick.AddListener(() => SelectEnvironment("Space"));
+        rainyDayButton.onClick.AddListener(() => SelectEnvironment("Rainy Day"));
 
         skyboxManager.OnFirstWindowSpawned += HandleFirstSpawn;
     }
 
-    // =======================
-    //   Update (X button logic)
-    // =======================
     private void Update()
     {
         if (!hasSpawnedFirstWindow) return;
@@ -70,16 +71,12 @@ public class UIFlowController : MonoBehaviour
         if (OVRInput.GetDown(toggleButton))
         {
             isOptionsVisible = !isOptionsVisible;
-
             optionsPanelAnchor.SetActive(isOptionsVisible);
             pressXShow.SetActive(!isOptionsVisible);
             pressXHide.SetActive(isOptionsVisible);
         }
     }
 
-    // =======================
-    //   UI Navigation
-    // =======================
     private void ShowInstructions() => ShowOnly(instructionsPanel);
     private void ShowForm() => ShowOnly(formPanel);
     private void ShowReady() => ShowOnly(readyPanel);
@@ -97,9 +94,6 @@ public class UIFlowController : MonoBehaviour
         panel?.SetActive(true);
     }
 
-    // =======================
-    //   Environment Selection
-    // =======================
     private void SelectEnvironment(string env)
     {
         selectedEnvironment = env;
@@ -113,9 +107,6 @@ public class UIFlowController : MonoBehaviour
         SelectEnvironment(environments[index]);
     }
 
-    // =======================
-    //   Spawn & Reset
-    // =======================
     private void OnSpawnWindow()
     {
         skyboxManager.SpawnWindow();
@@ -136,9 +127,6 @@ public class UIFlowController : MonoBehaviour
         ShowOptions();
     }
 
-    // =======================
-    //   After first spawn
-    // =======================
     private void HandleFirstSpawn()
     {
         hasSpawnedFirstWindow = true;
